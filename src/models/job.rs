@@ -34,15 +34,32 @@ pub struct Job {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")] // <--- This handles all fields automatically!
+#[serde(rename_all = "camelCase")]
 pub struct JobRequest {
-    pub user_id: String,     // Becomes "userId"
-    pub task_name: String,   // Becomes "taskName"
-    pub repeating: bool,     // Remains "repeating"
-    pub retry_count: i32,    // Becomes "retryCount"
+    pub user_id: String,     
+    pub task_name: String,   
+    pub repeating: bool,     
+    pub retry_count: i32,    
+    pub daily: Option<Vec<Daily>>  
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")] 
+pub struct Daily {
+    pub day: String,
+    pub execute_times: Vec<String>
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct JobResponse{
-    pub job: Job
+    pub job: Job,
+    pub daily_confirmation: Option<Vec<DailyConfirmation>>,
+    pub insertion_status: String
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct DailyConfirmation {
+    pub day: String,
+    pub insert_count: i32
+}
+
