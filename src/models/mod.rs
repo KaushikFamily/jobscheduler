@@ -7,3 +7,4 @@ pub use job:: JobResponse;
 
 pub use task::TaskResponse;
 pub use task::TaskNextHourResponse;
+pub use task::Task;

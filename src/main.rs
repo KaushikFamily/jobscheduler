@@ -1,5 +1,7 @@
 use std::println;
 
+use crate::executor::processor;
+
 mod routes;
 mod schedule_job;
 mod models;
@@ -15,7 +17,14 @@ async fn main() {
 
     println!("SERVER IS RUNNING ON HTTP://127.0.0.1:3000");
 
-    let _ = executor::get_next_hour_tasks().await;
-
+    let task_response = executor::get_next_hour_tasks().await;
+    
+    match task_response {
+        Ok(tasks) => {
+            let _ = processor::process_tasks(tasks).await;
+        }
+        Err(status) => println!("Error status received: {}", status)
+    }
+ 
     axum::serve(listener, app).await.unwrap();
 }
