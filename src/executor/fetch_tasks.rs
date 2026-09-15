@@ -56,6 +56,4 @@ pub async fn get_next_hour_tasks() -> Result<Vec<Task>, StatusCode> {
         Err(StatusCode::from_u16(response.status().as_u16())
             .unwrap_or(StatusCode::BAD_REQUEST))
     }
-
-
 }
