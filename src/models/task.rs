@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -22,4 +24,22 @@ pub struct Task {
     pub user_id: String,
     pub day: String,
     pub execute_time: String
+}
+
+#[derive(Debug, Eq, PartialEq)]
+pub struct TaskHeapNode {
+    pub execute: u32,
+    pub task_name: String
+}
+
+impl Ord for TaskHeapNode {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.execute.cmp(&self.execute)
+    }
+}
+
+impl PartialOrd for TaskHeapNode {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
 }

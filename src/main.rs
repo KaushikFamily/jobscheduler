@@ -21,7 +21,11 @@ async fn main() {
     
     match task_response {
         Ok(tasks) => {
-            let _ = processor::process_tasks(tasks).await;
+            if tasks.len() != 0 {
+                let _ = processor::process_tasks(tasks).await;
+            } else {
+                println!("EMPTY LIST: PROCESSING_TASKS SKIPPED")
+            }
         }
         Err(status) => println!("Error status received: {}", status)
     }
