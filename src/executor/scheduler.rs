@@ -1,12 +1,11 @@
 use std::collections::BinaryHeap;
-use std::cmp::Reverse;
 use std::println;
 
 use crate::models::{Task, TaskHeapNode};
 
 // let mut min_heap = BinaryHeap::new();
 
-pub async fn process_tasks(tasks: Vec<Task>) -> Option<String> {
+pub async fn run_scheduler(tasks: Vec<Task>) -> Option<String> {
     
     let heap_nodes = tasks
         .iter()
