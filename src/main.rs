@@ -28,7 +28,7 @@ async fn main() {
     match task_response {
         Ok(tasks) => {
             if tasks.len() != 0 {
-                let _ = scheduler::run_scheduler(tasks).await;
+                let _ = scheduler::run_scheduler(tasks);
             } else {
                 println!("EMPTY LIST: PROCESSING_TASKS SKIPPED")
             }
