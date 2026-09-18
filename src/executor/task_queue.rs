@@ -1,4 +1,6 @@
-use std::{collections::BinaryHeap, sync::{Arc, Mutex}};
+use std::{collections::BinaryHeap, sync::{Arc}};
+
+use tokio::sync::Mutex;
 
 use crate::models::TaskHeapNode;
 
