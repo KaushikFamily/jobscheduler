@@ -1,6 +1,8 @@
-use std::println;
+use std::{collections::BinaryHeap, println, sync::Arc};
 
-use crate::executor::processor;
+use tokio::sync::Mutex;
+
+use crate::{executor::scheduler, models::TaskHeapNode};
 
 mod routes;
 mod schedule_job;
@@ -17,12 +19,16 @@ async fn main() {
 
     println!("SERVER IS RUNNING ON HTTP://127.0.0.1:3000");
 
+    let mut min_heap: BinaryHeap<TaskHeapNode> = BinaryHeap::new();
+
+    let heap = Arc::new(Mutex::new(min_heap));
+
     let task_response = executor::get_next_hour_tasks().await;
     
     match task_response {
         Ok(tasks) => {
             if tasks.len() != 0 {
-                let _ = processor::process_tasks(tasks).await;
+                let _ = scheduler::run_scheduler(tasks);
             } else {
                 println!("EMPTY LIST: PROCESSING_TASKS SKIPPED")
             }
