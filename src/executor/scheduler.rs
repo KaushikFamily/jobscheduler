@@ -28,7 +28,7 @@ pub async fn run_scheduler(
         match tasks_list {
             Some(tasks) => {
                 let no_of_tasks = tasks.len();
-                insert_into_queue(queue, tasks);
+                let _ = insert_into_queue(queue, tasks).await;
                 println!("SCHEDULING {} TASKS", no_of_tasks)
             }
             None => println!("NO TASKS SCHEDULED FOR NEXT HOUR")
