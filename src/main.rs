@@ -34,8 +34,14 @@ async fn main() {
         process_tasks(executor_heap, 5).await
     });
 
+    let server_thread = tokio::spawn(async move {
+        axum::serve(listener, app)
+            .await
+            .unwrap();
+    });
+
     let _ = scheduler_thread.await;
     let _ = executor_thread.await;
+    let _ = server_thread.await;
 
-    axum::serve(listener, app).await.unwrap();
 }
