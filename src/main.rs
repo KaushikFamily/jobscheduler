@@ -1,8 +1,8 @@
-use std::{collections::BinaryHeap, println, sync::Arc};
+use std::{collections::BinaryHeap, println, sync::Arc, thread::spawn};
 
 use tokio::sync::Mutex;
 
-use crate::{executor::scheduler, models::TaskHeapNode};
+use crate::{executor::{new_queue, process_tasks, run_scheduler, scheduler, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
 
 mod routes;
 mod schedule_job;
@@ -19,22 +19,23 @@ async fn main() {
 
     println!("SERVER IS RUNNING ON HTTP://127.0.0.1:3000");
 
-    let mut min_heap: BinaryHeap<TaskHeapNode> = BinaryHeap::new();
+    // Creating mutex lock on shared binary heap
+    let queue : SharedTaskHeap = new_queue();
 
-    let heap = Arc::new(Mutex::new(min_heap));
+    // Copying mutex lock to share heap across threads
+    let scheduler_heap: SharedTaskHeap = Arc::clone(&queue);
+    let executor_heap: SharedTaskHeap = Arc::clone(&queue);
 
-    let task_response = executor::get_next_hour_tasks().await;
-    
-    match task_response {
-        Ok(tasks) => {
-            if tasks.len() != 0 {
-                let _ = scheduler::run_scheduler(tasks);
-            } else {
-                println!("EMPTY LIST: PROCESSING_TASKS SKIPPED")
-            }
-        }
-        Err(status) => println!("Error status received: {}", status)
-    }
- 
+    let scheduler_thread = tokio::spawn(async move {
+        run_scheduler(&scheduler_heap, 150000).await;
+    });
+
+    let executor_thread = tokio::spawn(async move {
+        process_tasks(executor_heap, 5).await
+    });
+
+    let _ = scheduler_thread.await;
+    let _ = executor_thread.await;
+
     axum::serve(listener, app).await.unwrap();
 }
