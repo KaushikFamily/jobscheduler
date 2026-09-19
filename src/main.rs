@@ -27,15 +27,21 @@ async fn main() {
     let executor_heap: SharedTaskHeap = Arc::clone(&queue);
 
     let scheduler_thread = tokio::spawn(async move {
-        run_scheduler(&scheduler_heap, 150000).await;
+        run_scheduler(&scheduler_heap, 10).await;
     });
 
     let executor_thread = tokio::spawn(async move {
         process_tasks(executor_heap, 5).await
     });
 
+    let server_thread = tokio::spawn(async move {
+        axum::serve(listener, app)
+            .await
+            .unwrap();
+    });
+
     let _ = scheduler_thread.await;
     let _ = executor_thread.await;
+    let _ = server_thread.await;
 
-    axum::serve(listener, app).await.unwrap();
 }
