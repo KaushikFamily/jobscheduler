@@ -3,6 +3,7 @@ pub mod scheduler;
 pub mod task_queue;
 pub mod helper;
 pub mod processor;
+pub mod run_tasks;
 
 pub use fetch_tasks::get_next_hour_tasks;
 pub use scheduler::run_scheduler;
