@@ -32,10 +32,6 @@ pub struct TaskHeapNode {
     pub task_name: String
 }
 
-pub struct feed_fishes_v1 {
-
-}
-
 // ********** Trait Implementation **********
 
 impl Ord for TaskHeapNode {

@@ -1,6 +1,6 @@
 use std::{println, thread, time::Duration};
 
-use crate::executor::{current_time_seconds, task_queue::SharedTaskHeap};
+use crate::executor::{current_time_seconds, run_tasks::match_task, task_queue::SharedTaskHeap};
 
 pub async fn process_tasks(
     queue: SharedTaskHeap,
@@ -28,7 +28,8 @@ pub async fn process_tasks(
 
             match task {
                 Some(node) => {
-                    println!("PROCESSSING NODE {} at time {}", node.task_name, node.execute)
+                    println!("PROCESSSING NODE {} at time {}", node.task_name, node.execute);
+                    let _ = match_task(node.task_name).await;
                 },
                 None => {
                     break;
