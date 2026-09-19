@@ -27,7 +27,7 @@ async fn main() {
     let executor_heap: SharedTaskHeap = Arc::clone(&queue);
 
     let scheduler_thread = tokio::spawn(async move {
-        run_scheduler(&scheduler_heap, 150000).await;
+        run_scheduler(&scheduler_heap, 10).await;
     });
 
     let executor_thread = tokio::spawn(async move {

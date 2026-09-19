@@ -7,11 +7,15 @@ use axum::{
 
 use serde::{Deserialize, Serialize};
 
-async fn hello_world() -> &'static str {
+async fn hello_world(
+) -> &'static str 
+{
     "Hello, World"
 }
 
-pub fn create_routes() -> Router {
+pub fn create_routes(
+) -> Router 
+{
     Router::new()
         .route("/", get(hello_world))
         .route("/jobs/schedule", post(create_job))
