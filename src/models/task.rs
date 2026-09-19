@@ -32,6 +32,12 @@ pub struct TaskHeapNode {
     pub task_name: String
 }
 
+pub struct feed_fishes_v1 {
+
+}
+
+// ********** Trait Implementation **********
+
 impl Ord for TaskHeapNode {
     fn cmp(&self, other: &Self) -> Ordering {
         other.execute.cmp(&self.execute)
@@ -43,3 +49,5 @@ impl PartialOrd for TaskHeapNode {
         Some(self.cmp(other))
     }
 }
+
+// ********** Trait Implementation **********
