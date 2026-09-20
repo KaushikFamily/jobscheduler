@@ -2,7 +2,7 @@ use std::println;
 
 use reqwest::StatusCode;
 
-use crate::{executor::run_tasks::{feed_fishes_v1, test_email_v1}, models::Task};
+use crate::run_tasks::{feed_fishes_v1, test_email_v1};
 
 pub async fn match_task(
     task_name: String
@@ -28,10 +28,13 @@ pub async fn match_task(
                 }
                 Err(err) => println!("Error sending email: {}", err)
             };
-            
+
             Ok(String::from("TESTING EMAIL"))
         }
-        _ => Err(StatusCode::NOT_FOUND)
+        _ => {
+            println!("DID NOT FIND ANY MATCHING TASKS");
+            Err(StatusCode::NOT_FOUND)
+        } 
     };
 
     res

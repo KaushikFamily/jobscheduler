@@ -1,7 +1,7 @@
 use std::time::Duration;
 use std::println;
 
-use crate::{executor::{calc_seconds, get_next_hour_tasks, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
+use crate::{manager::{calc_seconds, get_next_hour_tasks, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
 
 // let mut min_heap = BinaryHeap::new();
 

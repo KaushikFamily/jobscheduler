@@ -2,12 +2,13 @@ use std::{collections::BinaryHeap, println, sync::Arc, thread::spawn};
 
 use tokio::sync::Mutex;
 
-use crate::{executor::{new_queue, process_tasks, run_scheduler, scheduler, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
+use crate::{manager::{new_queue, process_tasks, run_scheduler, scheduler, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
 
 mod routes;
 mod schedule_job;
 mod models;
-mod executor;
+mod manager;
+mod run_tasks;
 
 #[tokio::main]
 async fn main() {
