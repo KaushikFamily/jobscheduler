@@ -1,8 +1,6 @@
-use std::{collections::BinaryHeap, println, sync::Arc, thread::spawn};
+use std::{println, sync::Arc};
 
-use tokio::sync::Mutex;
-
-use crate::{manager::{new_queue, process_tasks, run_scheduler, scheduler, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
+use crate::{manager::{new_queue, process_tasks, run_scheduler, task_queue::SharedTaskHeap}};
 
 mod routes;
 mod schedule_job;

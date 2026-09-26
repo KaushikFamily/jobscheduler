@@ -13,7 +13,6 @@ pub async fn create_job(
 ) -> Result<(StatusCode, Json<Option<JobResponse>>), StatusCode> {
     
     let client = reqwest::Client::new();
-    println!("HELLO ITS HITTING THIS ENDPOINT");
 
     let response = client
         .post("http://localhost:8080/jobs/schedule")
@@ -21,9 +20,6 @@ pub async fn create_job(
         .send()
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?; 
-
-    println!("HELLO ITS HITTING THIS ENDPOINT");
-
 
     if response.status().is_success() {
         // let response_text = &response.text().await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;

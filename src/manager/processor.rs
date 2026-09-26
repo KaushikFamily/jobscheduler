@@ -1,6 +1,6 @@
 use std::{println, thread, time::Duration};
 
-use crate::manager::{current_time_seconds, match_task, task_queue::SharedTaskHeap};
+use crate::{manager::{current_time_seconds, drop_event, match_task, task_queue::SharedTaskHeap}, models::Event};
 
 pub async fn process_tasks(
     queue: SharedTaskHeap,
@@ -29,7 +29,14 @@ pub async fn process_tasks(
             match task {
                 Some(node) => {
                     println!("PROCESSSING NODE {} at time {}", node.task_name, node.execute);
-                    let _ = match_task(node.task_name).await;
+                    
+                    let event = Event {
+                        job_id: node.job_id,
+                        job_name: node.task_name,
+                        event_type: String::from("CONSUME")
+                    };
+
+                    let _ = drop_event(event).await;
                 },
                 None => {
                     break;

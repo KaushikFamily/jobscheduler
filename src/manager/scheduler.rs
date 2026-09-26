@@ -51,6 +51,7 @@ async fn insert_into_queue(
         .map(|task| {
             TaskHeapNode {
                 execute: calc_seconds(&task.execute_time).unwrap(), 
+                job_id: task.job_id.clone(),
                 task_name: task.task_name.clone()
             }
         })
