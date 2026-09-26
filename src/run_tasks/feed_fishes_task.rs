@@ -5,7 +5,7 @@ use lettre::{AsyncSmtpTransport, AsyncTransport, Message, Tokio1Executor, messag
 
 // Duplicate code for sending emails, need to refactor and see how to use traits to advantage
 pub async fn feed_fishes_v1(
-    task: &str
+    _task: &str
 ) -> Result<String, Box<dyn std::error::Error>> 
 {
     dotenvy::dotenv()?;

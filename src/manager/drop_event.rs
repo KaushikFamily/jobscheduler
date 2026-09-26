@@ -1,6 +1,5 @@
 // Drops event for JobExecutor to handle
 
-use axum::Json;
 use reqwest::{Client, StatusCode};
 
 use crate::models::Event;
