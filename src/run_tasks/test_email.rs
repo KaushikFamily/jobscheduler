@@ -1,9 +1,9 @@
-use std::env;
+use std::{env, error::Error};
 
 use lettre::{AsyncSmtpTransport, AsyncTransport, Message, SmtpTransport, Tokio1Executor, Transport, message::header::ContentType, transport::smtp::authentication::Credentials};
 
 pub async fn test_email_v1(
-) -> Result<String, Box<dyn std::error::Error>> 
+) -> Result<String, Box<dyn Error>> 
 {
     dotenvy::dotenv()?;
 

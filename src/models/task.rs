@@ -29,6 +29,7 @@ pub struct Task {
 #[derive(Debug, Eq, PartialEq)]
 pub struct TaskHeapNode {
     pub execute: u32,
+    pub job_id: String,
     pub task_name: String
 }
 
