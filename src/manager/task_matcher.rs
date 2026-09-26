@@ -23,7 +23,7 @@ pub async fn match_task(
             let task_resp = test_email_v1().await;
 
             let _ = match task_resp {
-                Ok(val) => {
+                Ok(_val) => {
                     println!("SUCCESSFULLY SENT test_email");
                 }
                 Err(err) => println!("Error sending email: {}", err)

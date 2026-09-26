@@ -1,9 +1,9 @@
-use std::{println, ptr::null};
+use std::println;
 
-use crate::models::{Job, JobRequest, JobResponse};
+use crate::models::{JobRequest, JobResponse};
 
 use axum::{
-    Json, extract::State, http::StatusCode, response::IntoResponse,
+    Json, http::StatusCode,
 };
 
 // 1. Return a Result so the `?` operator works. 

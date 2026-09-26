@@ -1,6 +1,6 @@
-use std::{println, thread, time::Duration};
+use std::{println, time::Duration};
 
-use crate::{manager::{current_time_seconds, drop_event, match_task, task_queue::SharedTaskHeap}, models::Event};
+use crate::{manager::{current_time_seconds, drop_event, task_queue::SharedTaskHeap}, models::Event};
 
 pub async fn process_tasks(
     queue: SharedTaskHeap,
