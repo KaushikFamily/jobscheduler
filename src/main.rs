@@ -12,11 +12,11 @@ mod run_tasks;
 async fn main() {
     let app = routes::create_routes();
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
         .await
         .unwrap();
 
-    println!("SERVER IS RUNNING ON HTTP://127.0.0.1:3000");
+    println!("SERVER IS RUNNING ON HTTP://0.0.0.0:3000");
 
     // Creating mutex lock on shared binary heap
     let queue : SharedTaskHeap = new_queue();
