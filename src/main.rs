@@ -1,4 +1,4 @@
-use std::{println, sync::Arc};
+use std::{collections::HashSet, println, sync::Arc};
 
 use crate::{manager::{new_queue, process_tasks, run_scheduler, task_queue::SharedTaskHeap}};
 
@@ -26,7 +26,8 @@ async fn main() {
     let executor_heap: SharedTaskHeap = Arc::clone(&queue);
 
     let scheduler_thread = tokio::spawn(async move {
-        run_scheduler(&scheduler_heap, 15000).await;
+        let mut completed_job_ids: HashSet<String> = HashSet::new();
+        run_scheduler(&scheduler_heap, 10, &mut completed_job_ids).await;
     });
 
     let executor_thread = tokio::spawn(async move {

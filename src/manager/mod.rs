@@ -5,6 +5,7 @@ pub mod helper;
 pub mod processor;
 pub mod task_matcher;
 pub mod drop_event;
+pub mod tasks_set;
 
 pub use fetch_tasks::get_next_hour_tasks;
 pub use scheduler::run_scheduler;
