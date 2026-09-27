@@ -1,5 +1,7 @@
-use std::time::Duration;
+use std::{collections::HashSet, time::Duration};
 use std::println;
+
+use reqwest::StatusCode;
 
 use crate::{manager::{calc_seconds, get_next_hour_tasks, task_queue::SharedTaskHeap}, models::{Task, TaskHeapNode}};
 
@@ -7,7 +9,8 @@ use crate::{manager::{calc_seconds, get_next_hour_tasks, task_queue::SharedTaskH
 
 pub async fn run_scheduler(
     queue: &SharedTaskHeap,
-    sleep_time: u64
+    sleep_time: u64,
+    completed_job_ids: &mut HashSet<String>
 ) 
 {
     loop {
@@ -27,9 +30,7 @@ pub async fn run_scheduler(
         
         match tasks_list {
             Some(tasks) => {
-                let no_of_tasks = tasks.len();
-                let _ = insert_into_queue(queue, tasks).await;
-                println!("SCHEDULING {} TASKS", no_of_tasks)
+                let _ = insert_into_queue(queue, tasks, completed_job_ids).await;
             }
             None => println!("NO TASKS SCHEDULED FOR NEXT HOUR")
         }
@@ -43,28 +44,49 @@ pub async fn run_scheduler(
 
 async fn insert_into_queue(
     queue: &SharedTaskHeap, 
-    tasks: Vec<Task>
-) 
+    tasks: Vec<Task>,
+    completed_job_ids: &mut HashSet<String>
+)
 {
     let heap_nodes = tasks
         .iter()
         .map(|task| {
-            TaskHeapNode {
-                execute: calc_seconds(&task.execute_time).unwrap(), 
-                job_id: task.job_id.clone(),
-                task_name: task.task_name.clone()
+            if (!completed_job_ids.contains(&task.job_id)) {
+                Some(TaskHeapNode {
+                    execute: calc_seconds(&task.execute_time).unwrap(), 
+                    job_id: task.job_id.clone(),
+                    task_name: task.task_name.clone()
+                })
+            } else {
+                None
             }
         })
-        .collect::<Vec<TaskHeapNode>>();
+        .collect::<Vec<Option<TaskHeapNode>>>();
+
+    let mut no_added = 0;
     
     // Mutex locking for heap insertion
     {
         let mut heap = queue.lock().await;
 
-        for node in heap_nodes {
-            heap.push(node);
-        }
+        let no_nodes_added = heap_nodes
+            .into_iter()
+            .map(|node| {
+                match node {
+                    Some(data) => {
+                        completed_job_ids.insert(data.job_id.clone());
+                        heap.push(data);
+                        1
+                    }
+                    None => 0,
+                } 
+        })
+        .collect::<Vec<i32>>();
+
+        no_added = no_nodes_added.iter().sum();
 
         println!("SCHEDULER ADDED ALL HEAP NODES");
     }
+
+    println!("SCHEDULING {} TASKS", no_added)
 }
