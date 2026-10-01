@@ -3,7 +3,6 @@ pub mod scheduler;
 pub mod task_queue;
 pub mod helper;
 pub mod processor;
-pub mod task_matcher;
 pub mod drop_event;
 pub mod tasks_set;
 
